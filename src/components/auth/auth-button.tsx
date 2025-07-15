@@ -9,7 +9,6 @@ export function AuthButton() {
     if (session?.user) {
         return (
             <Button
-                variant="outline"
                 onClick={() => signOut()}
             >
                 Sign Out
@@ -19,7 +18,6 @@ export function AuthButton() {
 
     return (
         <Button
-            variant="outline"
             onClick={() => signIn("google")}
         >
             Sign In with Google

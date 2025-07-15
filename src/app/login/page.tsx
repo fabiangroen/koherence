@@ -19,7 +19,7 @@ export default async function LoginPage() {
                         Sign in to manage your Kobo library
                     </p>
                 </div>
-                <div className="space-y-4">
+                <div className="flex justify-center space-y-4">
                     <AuthButton />
                 </div>
             </div>

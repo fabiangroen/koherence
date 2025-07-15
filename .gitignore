@@ -1,4 +1,8 @@
-# dependencies
+# Application files
+/data
+/bin
+
+# Dependencies
 /node_modules
 /.pnp
 .pnp.js
