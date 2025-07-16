@@ -1,4 +1,4 @@
-import { ThemeToggle } from "@/components/ui/themetoggle";
+import { ThemeToggle } from "@/components/themetoggle";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { CircleUserRound } from "lucide-react";
 
