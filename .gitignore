@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+public/covers/Dune1.jpg
+public/covers/Dune2.jpg
+public/covers/TheAnxietyOfInfluence.jpg
+public/covers/Dune3.jpg
