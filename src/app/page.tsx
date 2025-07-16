@@ -1,5 +1,5 @@
 import { ThemeToggle } from "@/components/themetoggle";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import SignIn from "@/components/sign-button";
 import { CircleUserRound } from "lucide-react";
 
 export default function Home() {
@@ -9,10 +9,7 @@ export default function Home() {
         <div className="text-2xl">Koherence</div>
         <div className="flex-1"></div>
         <ThemeToggle />
-        <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
+        <SignIn />
       </div>
     </div >
   );
