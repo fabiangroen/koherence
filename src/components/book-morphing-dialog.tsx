@@ -56,7 +56,7 @@ export function BookMorphingDialogTrigger(props: React.ComponentProps<typeof Mor
 export function BookMorphingDialogContent(props: React.ComponentProps<typeof MorphingDialogContent>) {
   return (
     <MorphingDialogContent
-      className={cn('overflow-hidden bg-card text-card-foreground rounded-xl border p-6', props.className)}
+      className={cn('overflow-hidden bg-card text-card-foreground rounded-xl border p-2', props.className)}
       {...props}
     />
   );
@@ -65,7 +65,6 @@ export function BookMorphingDialogContent(props: React.ComponentProps<typeof Mor
 export function BookMorphingDialogContainer(props: React.ComponentProps<typeof MorphingDialogContainer>) {
   return (
     <MorphingDialogContainer
-      className={cn('fixed inset-0 h-full w-full bg-black/50', props.className)}
       {...props}
     />
   );

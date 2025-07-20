@@ -1,6 +1,6 @@
 import { auth } from "@/auth"
 import { BookCard } from "@/components/book-card";
-import { BookMorphingDialog, BookMorphingDialogTrigger, BookMorphingDialogContent, BookMorphingDialogContainer } from "@/components/book-morphing-dialog"
+import { BookMorphingDialog, BookMorphingDialogTrigger, BookMorphingDialogContent, BookMorphingDialogContainer, BookMorphingDialogClose } from "@/components/book-morphing-dialog"
 import BookDrawer from "@/components/book-drawer"
 import type { Book } from "@/lib/types";
 
@@ -45,6 +45,7 @@ export default async function CardGrid() {
                         <BookMorphingDialogContainer>
                             <BookMorphingDialogContent>
                                 <BookDrawer />
+                                <BookMorphingDialogClose className="opacity-0" />
                             </BookMorphingDialogContent>
                         </BookMorphingDialogContainer>
                     </BookMorphingDialog>

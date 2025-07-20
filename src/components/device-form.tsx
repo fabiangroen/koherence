@@ -31,6 +31,7 @@ export default function DeviceForm() {
                     <div key={device.id} className="flex items-center space-x-2">
                         <Checkbox
                             id={device.id}
+                            className="transition-all"
                             checked={selectedDevices.includes(device.id)}
                             onCheckedChange={() => handleDeviceToggle(device.id)}
                         />
