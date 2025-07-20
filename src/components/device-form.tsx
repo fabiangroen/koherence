@@ -1,4 +1,5 @@
 "use client"
+
 import { Smartphone, Tablet, Monitor, Headphones } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -15,8 +16,12 @@ const devices = [
 export default function DeviceForm() {
     const [selectedDevices, setSelectedDevices] = useState<string[]>(["phone", "kindle"])
 
-    const handleDeviceToggle = (deviceId: string) => {
-        setSelectedDevices((prev) => (prev.includes(deviceId) ? prev.filter((id) => id !== deviceId) : [...prev, deviceId]))
+    function handleDeviceToggle(deviceId: string) {
+        setSelectedDevices((prev) =>
+            prev.includes(deviceId)
+                ? prev.filter((id) => id !== deviceId)
+                : [...prev, deviceId]
+        );
     }
     return (
         <div className="space-y-2">

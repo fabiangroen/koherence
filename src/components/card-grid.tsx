@@ -1,7 +1,8 @@
 import { auth } from "@/auth"
 import { BookCard } from "@/components/book-card";
-import { Drawer, DrawerTrigger, DrawerContent } from "@/components/ui/drawer"
+import { BookMorphingDialog, BookMorphingDialogTrigger, BookMorphingDialogContent, BookMorphingDialogContainer } from "@/components/book-morphing-dialog"
 import BookDrawer from "@/components/book-drawer"
+import type { Book } from "@/lib/types";
 
 
 const books: Book[] = [
@@ -37,26 +38,16 @@ export default async function CardGrid() {
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-8 gap-y-6 w-full max-w-6xl">
                 {books.map((book, index) => (
-                    <Drawer key="bookdrawer">
-                        <DrawerTrigger asChild>
-                            <BookCard
-                                key={index}
-                                title={book.title}
-                                author={book.author}
-                                year={book.releaseYear.toString()}
-                                imageSrc={book.coverImg}
-                            />
-                        </DrawerTrigger>
-                        <DrawerContent>
-                            <BookDrawer
-                                key={index}
-                                title={book.title}
-                                author={book.author}
-                                year={book.releaseYear.toString()}
-                                imageSrc={book.coverImg}
-                            />
-                        </DrawerContent>
-                    </Drawer>
+                    <BookMorphingDialog key={index} book={book}>
+                        <BookMorphingDialogTrigger>
+                            <BookCard />
+                        </BookMorphingDialogTrigger>
+                        <BookMorphingDialogContainer>
+                            <BookMorphingDialogContent>
+                                <BookDrawer />
+                            </BookMorphingDialogContent>
+                        </BookMorphingDialogContainer>
+                    </BookMorphingDialog>
                 ))}
             </div>
         </main>
