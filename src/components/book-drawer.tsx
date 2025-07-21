@@ -32,7 +32,7 @@ export default function BookDrawer() {
                             alt={title}
                             width={128}
                             height={176}
-                            className="rounded-xl object-cover"
+                            className="rounded-xl object-cover h-full w-auto"
                         />
                     </div>
 
