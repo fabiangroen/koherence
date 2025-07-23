@@ -1,9 +1,6 @@
 import { auth } from "@/auth"
 import { BookCard } from "@/components/book-card";
-import { BookMorphingDialog, BookMorphingDialogTrigger, BookMorphingDialogContent, BookMorphingDialogContainer, BookMorphingDialogClose } from "@/components/book-morphing-dialog"
-import BookDrawer from "@/components/book-drawer"
 import type { Book } from "@/lib/types";
-
 
 const books: Book[] = [
     {
@@ -38,17 +35,7 @@ export default async function CardGrid() {
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-8 gap-y-6 w-full max-w-6xl">
                 {books.map((book, index) => (
-                    <BookMorphingDialog key={index} book={book}>
-                        <BookMorphingDialogTrigger>
-                            <BookCard />
-                        </BookMorphingDialogTrigger>
-                        <BookMorphingDialogContainer>
-                            <BookMorphingDialogContent>
-                                <BookDrawer />
-                                <BookMorphingDialogClose className="opacity-0" />
-                            </BookMorphingDialogContent>
-                        </BookMorphingDialogContainer>
-                    </BookMorphingDialog>
+                    <BookCard key={index} book={book} />
                 ))}
             </div>
         </main>

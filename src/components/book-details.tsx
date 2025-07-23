@@ -4,24 +4,22 @@ import {
     MorphingDialogTitle,
     MorphingDialogDescription,
 } from '@/components/ui/morphing-dialog'
-import { useBookContext } from '@/components/book-morphing-dialog';
 import { Button } from "@/components/ui/button";
 import DeviceForm from "@/components/device-form";
 import { Separator } from "@/components/ui/separator"
-import { Trash2, X } from "lucide-react";
+import { X } from "lucide-react";
 import Image from "next/image";
+import type { Book } from '@/lib/types';
 
-export default function BookDrawer() {
-    const { book } = useBookContext();
+interface BookDetailsProps {
+    book: Book;
+}
 
-    if (!book) return null;
-
+export default function BookDetails({ book }: BookDetailsProps) {
     const { title, author, releaseYear, coverImg } = book;
 
     return (
         <div className="mx-auto w-full max-w-2xl relative">
-
-
             <div className="p-4 pb-0">
                 {/* Expanded Book Display */}
                 <div className="flex gap-6 mb-4">
