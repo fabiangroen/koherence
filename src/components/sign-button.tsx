@@ -20,7 +20,7 @@ export default async function SignIn() {
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button variant="ghost" size="icon">
+                <Button variant="ghost" size="icon" className="hover:cursor-pointer">
                     <Avatar>
                         <AvatarImage src={session.user.image ?? undefined} />
                         <AvatarFallback>{session.user.name?.charAt(0)}</AvatarFallback>

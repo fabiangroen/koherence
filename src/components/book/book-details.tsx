@@ -5,7 +5,7 @@ import {
     MorphingDialogDescription,
 } from '@/components/ui/morphing-dialog'
 import { Button } from "@/components/ui/button";
-import DeviceForm from "@/components/device-form";
+import DeviceForm from "@/components/book/device-form";
 import { Separator } from "@/components/ui/separator"
 import { X } from "lucide-react";
 import Image from "next/image";

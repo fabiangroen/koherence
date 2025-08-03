@@ -1,15 +1,19 @@
 import { auth } from "@/auth"
-import { BookCard } from "@/components/book-card";
+import { BookCard } from "@/components/book/book-card";
 import type { Book } from "@/lib/types";
+import { db } from "@/db";
+import { books as booksTable } from "@/db/schema";
 
-const books: Book[] = [
+/* const books: Book[] = [
     {
         author: "Frank Herbert",
         title: "Dune",
         releaseYear: 1965,
         coverImg: "/covers/Dune1.jpg",
     },
-];
+]; */
+
+
 
 export default async function CardGrid() {
     const session = await auth()
@@ -27,7 +31,7 @@ export default async function CardGrid() {
             <p className="mt-8 text-muted-foreground">You are not allowed to view this content</p>
         </main>
     )
-
+    const books: Book[] = await db.select().from(booksTable);
     return (
         <main className="flex flex-1 flex-col items-center">
             <p className="mt-8 text-muted-foreground mb-6">

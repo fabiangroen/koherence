@@ -12,7 +12,7 @@ import {
     MorphingDialogContainer,
     MorphingDialogClose
 } from '@/components/ui/morphing-dialog';
-import BookDetails from '@/components/book-details';
+import BookDetails from '@/components/book/book-details';
 import type { Book } from '@/lib/types';
 
 export function BookCard({ book }: { book: Book }) {
