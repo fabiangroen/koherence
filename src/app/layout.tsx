@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Satisfy } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { auth } from "@/auth";
+import { Toaster } from "@/components/ui/sonner"
 import Script from "next/script";
 
 const geistSans = Geist({
@@ -40,6 +41,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${SatisfyRegular.variable} antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <Toaster />
           {children}
         </ThemeProvider>
         {isAdmin && (
