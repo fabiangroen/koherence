@@ -4,6 +4,8 @@ import type { Book } from "@/lib/types";
 import { db } from "@/db";
 import { books as booksTable } from "@/db/schema";
 
+import FileUpload from "@/components/file-upload";
+
 /* const books: Book[] = [
     {
         author: "Frank Herbert",
@@ -33,7 +35,7 @@ export default async function CardGrid() {
     )
     const books: Book[] = await db.select().from(booksTable);
     return (
-        <main className="flex flex-1 flex-col items-center">
+        <main className="flex flex-1 flex-col items-center relative">
             <p className="mt-8 text-muted-foreground mb-6">
                 Welcome, {session.user.name}!
             </p>
@@ -41,6 +43,9 @@ export default async function CardGrid() {
                 {books.map((book, index) => (
                     <BookCard key={index} book={book} />
                 ))}
+            </div>
+            <div className="absolute top-4 right-4">
+                <FileUpload />
             </div>
         </main>
     );
