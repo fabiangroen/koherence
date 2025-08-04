@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { epubToKepub, extractMetadata, writeKepubFile } from "@/lib/backendUtils";
+import { epubToKepub, extractMetadata, generateUniqueFileName, writeKepubFile } from "@/lib/backendUtils";
 import { insertBook } from "@/db/insertions";
 
 // Map of MIME types to handlers for processing that type of file
@@ -29,7 +29,8 @@ export async function POST(req: Request) {
         if (!converter) throw new Error(`No handler for file type: ${file.type}`);
 
         const convertedFile = await converter(file);            // Convert the file to KEPUB format if necessary
-        const fileName = await writeKepubFile(convertedFile);   // Now we write this kepub file to the public/books folder
+        const fileName = await generateUniqueFileName(file);    // Generate a unique file name based on the file's content, we use file instead of convertedFile here because kebupify is nondeterministic
+        await writeKepubFile(convertedFile, fileName);          // Now we write this kepub file to the public/books folder
         const metadata = await extractMetadata(fileName);       // And we extract metadata from the newly written file
         const result = await insertBook(fileName, metadata);    // Finally we insert the book into the database
 

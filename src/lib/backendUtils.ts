@@ -67,12 +67,12 @@ const folderPath = path.join(process.cwd(), "public", "books");
 /**
  * Writes a Kepub file to the public/books folder.
  * @param file File object representing the KEPUB file.
+ * @param fileName The name to use for the file when writing it.
  * @returns Promise that resolves to the file path where the KEPUB file was written.
  */
-export async function writeKepubFile(file: File): Promise<string> {
+export async function writeKepubFile(file: File, fileName: string): Promise<string> {
   await fs.mkdir(folderPath, { recursive: true }); // Ensure directory exists
 
-  const fileName = await generateUniqueFileName(file);
   const filePath = path.join(folderPath, fileName);
 
   try {
