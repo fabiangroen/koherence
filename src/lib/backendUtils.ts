@@ -45,6 +45,7 @@ export async function epubToKepub(file: File): Promise<File> {
 
 
 import crypto from "crypto";
+
 /**
  * Computes a unique file name based on the file's content.
  * @param file File object for which to generate name
@@ -60,13 +61,15 @@ export async function generateUniqueFileName(file: File): Promise<string> {
   return fileName;
 }
 
+
+const folderPath = path.join(process.cwd(), "public", "books");
+
 /**
  * Writes a Kepub file to the public/books folder.
  * @param file File object representing the KEPUB file.
  * @returns Promise that resolves to the file path where the KEPUB file was written.
  */
 export async function writeKepubFile(file: File): Promise<string> {
-  const folderPath = path.join(process.cwd(), "public", "books");
   await fs.mkdir(folderPath, { recursive: true }); // Ensure directory exists
 
   const fileName = await generateUniqueFileName(file);
@@ -78,8 +81,26 @@ export async function writeKepubFile(file: File): Promise<string> {
   } catch (err) {
     // File does not exist, all is well
   }
-  
+
   await fs.writeFile(filePath, Buffer.from(await file.arrayBuffer()));
 
-  return filePath;
+  return fileName;
+}
+
+import  EPub  from 'epub';
+/**
+ * Extracts metadata from a KEPUB file.
+ * @param filename filename of the KEPUB file to extract metadata from.
+ * @returns Promise that resolves to an object containing the metadata.
+ */
+export async function extractMetadata(filename: string): Promise<EPub.Metadata> {
+  const epub = new EPub(path.join(folderPath, filename));
+
+  return new Promise((resolve, reject) => {
+    epub.on('end', () => {
+      resolve(epub.metadata);
+    });
+    epub.on('error', reject);
+    epub.parse();
+  });
 }

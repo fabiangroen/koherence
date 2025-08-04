@@ -18,7 +18,8 @@ import FileUpload from "@/components/file-upload";
 
 
 export default async function CardGrid() {
-    const session = await auth()
+    // TOOD: Adjust this to the new database schema
+    /*const session = await auth()
 
     if (!session?.user) return (
         <main className="flex flex-1 justify-center">
@@ -44,6 +45,13 @@ export default async function CardGrid() {
                     <BookCard key={index} book={book} />
                 ))}
             </div>
+            <div className="absolute top-4 right-4">
+                <FileUpload />
+            </div>
+        </main>
+    );*/
+    return (
+        <main className="flex flex-1 flex-col items-center relative">
             <div className="absolute top-4 right-4">
                 <FileUpload />
             </div>

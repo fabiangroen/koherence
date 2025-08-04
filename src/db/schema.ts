@@ -3,10 +3,12 @@ import { sqliteTable, text, int } from "drizzle-orm/sqlite-core";
 export const books = sqliteTable("books", {
     id: int("id").primaryKey(),
     title: text("title").notNull(),
-    author: text("author").notNull(),
-    releaseYear: int("release_year").notNull(),
-    coverImg: text("cover_img").notNull(),
-    epubFile: text("epub_file").notNull(),
+    creator: text("creator").notNull(),
+    releasedate: text("releasedate").notNull(),
+    language: text("language").notNull(),
+    publisher: text("publisher").notNull(),
+    subjects: text("subjects").notNull(),
+    filename: text("filename").notNull(),
 });
 
 export const devices = sqliteTable("devices", {

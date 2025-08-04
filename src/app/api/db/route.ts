@@ -16,6 +16,7 @@ export async function POST(req: Request) {
         const result = await db.run(query);
         return NextResponse.json(result);
     } catch (error: any) {
+        console.error("Database query error:", error);
         return new NextResponse(error.message, { status: 500 });
     }
 }

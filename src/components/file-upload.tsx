@@ -24,6 +24,7 @@ export default function FileUpload() {
     };
    
     const handleSubmit = async () => {
+        toast.info("Uploading files...");
         if (!files || files.length === 0) return;
         const formData = new FormData();
         files.forEach(file => formData.append('file', file));
