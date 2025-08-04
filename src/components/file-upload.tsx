@@ -19,10 +19,31 @@ export default function FileUpload() {
     const [files, setFiles] = useState<File[] | undefined>();
 
     const handleDrop = (files: File[]) => {
-        console.log(files);
+        //console.log(files);
         setFiles(files);
     };
-
+   
+    const handleSubmit = async () => {
+        if (!files || files.length === 0) return;
+        const formData = new FormData();
+        files.forEach(file => formData.append('file', file));
+        try {
+            const res = await fetch('/api/upload', {
+                method: 'POST',
+                body: formData,
+            });
+            const data = await res.json();
+            console.log(data);
+            if (res.ok) {
+                toast.success("Files uploaded successfully");
+            } else {
+                toast.error("Upload failed");
+            }
+        } catch (err) {
+            toast.error("Upload failed");
+        }
+    };
+    
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -52,9 +73,10 @@ export default function FileUpload() {
                     <DropzoneEmptyState />
                     <DropzoneContent />
                 </Dropzone>
-                <Button onClick={() => toast.success("Files uploaded successfully")}>Submit</Button>
+                <Button onClick={handleSubmit}>Submit</Button>
 
             </DialogContent>
         </Dialog>
     )
 }
+
