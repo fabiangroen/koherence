@@ -77,13 +77,13 @@ export async function writeKepubFile(file: File, fileName: string): Promise<stri
 
   try {
     await fs.access(filePath);
-    console.warn(`Warning: File already exists and will be overwritten: ${fileName}`);
+    console.warn(`Warning: File ${fileName} already exists, aborting write to it`);
   } catch (err) {
-    // File does not exist, all is well
+    // File does not exist, so we can make it
+    await fs.writeFile(filePath, Buffer.from(await file.arrayBuffer()));
   }
 
-  await fs.writeFile(filePath, Buffer.from(await file.arrayBuffer()));
-
+  
   return fileName;
 }
 
