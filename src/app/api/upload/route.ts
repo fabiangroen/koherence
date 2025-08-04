@@ -6,8 +6,6 @@ import { epubToKepub } from "@/lib/backendUtils";
 
 // Map of MIME types to handlers for processing that type of file
 const fileFormatConverters: Map<string, (file: File) => Promise<File>> = new Map();
-
-// Dummy handlers for now so we can see if we determine filetype correctly
 fileFormatConverters.set("application/epub+zip", async (file) => await epubToKepub(file)); // Convert EPUB to KEPUB
 fileFormatConverters.set('application/octet-stream', async (file) => file); // already in kepub format so we can just return it as is
 
