@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { db } from "@/db";
 import { books as booksTable } from "@/db/schema";
-import { epubToKepub } from "@/lib/backendUtils";
+import { epubToKepub, writeKepubFile } from "@/lib/backendUtils";
 
 // Map of MIME types to handlers for processing that type of file
 const fileFormatConverters: Map<string, (file: File) => Promise<File>> = new Map();
@@ -30,9 +30,10 @@ export async function POST(req: Request) {
         if( !converter) {
             return new NextResponse(`No handler for file type: ${file.type}`, { status: 400 });
         }
-        const convertedFile: File = await converter(file) 
-        console.log("Converted file: ", convertedFile);
-        // Here, we still have to save the file to the filesystem, extract metadata, and save it to the database
+
+        const convertedFile: File = await converter(file) // Convert file to KEPUB if necessary
+        const fileName = await writeKepubFile(convertedFile); // Write the KEPUB file to the public/books folder
+        // Here, we still have to extract metadata and save the book to the database
     }
     return NextResponse.json({ success: true});
 }

@@ -2,6 +2,7 @@ import fs from "fs/promises";
 import tmp from "os";
 import { exec } from "child_process";
 import path from "path";
+
 /**
  * Converts a single EPUB File object to KEPUB using kepubify CLI.
  * @param file File object representing the EPUB file.
@@ -40,4 +41,45 @@ export async function epubToKepub(file: File): Promise<File> {
   await fs.unlink(tempOutputPath);
 
   return kepubFile;
+}
+
+
+import crypto from "crypto";
+/**
+ * Computes a unique file name based on the file's content.
+ * @param file File object for which to generate name
+ * @returns Promise that resolves to the generated filename
+ */
+export async function generateUniqueFileName(file: File): Promise<string> {
+  const contentBuffer = Buffer.from(await file.arrayBuffer());
+  const hash = crypto.createHash("sha256").update(contentBuffer).digest("hex").slice(0, 12); // 12 chars is probably enough to avoid collisions, as it allows for 2^96 different values
+  
+  const extension = path.extname(file.name);
+  const fileName = `${hash}${extension}`;
+
+  return fileName;
+}
+
+/**
+ * Writes a Kepub file to the public/books folder.
+ * @param file File object representing the KEPUB file.
+ * @returns Promise that resolves to the file path where the KEPUB file was written.
+ */
+export async function writeKepubFile(file: File): Promise<string> {
+  const folderPath = path.join(process.cwd(), "public", "books");
+  await fs.mkdir(folderPath, { recursive: true }); // Ensure directory exists
+
+  const fileName = await generateUniqueFileName(file);
+  const filePath = path.join(folderPath, fileName);
+
+  try {
+    await fs.access(filePath);
+    console.warn(`Warning: File already exists and will be overwritten: ${fileName}`);
+  } catch (err) {
+    // File does not exist, all is well
+  }
+  
+  await fs.writeFile(filePath, Buffer.from(await file.arrayBuffer()));
+
+  return filePath;
 }
