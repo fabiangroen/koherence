@@ -38,7 +38,7 @@ export default async function CardGrid() {
         author: b.creator,
         title: b.title,
         releaseDate: b.releasedate.slice(0,4),
-        coverImg: `/covers/${b.filename}`,
+        coverImg: `/api/cover/${b.id}/${b.imageFileExtension}`,
     }));
     return (
         <main className="flex flex-1 flex-col items-center relative">
