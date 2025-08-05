@@ -26,7 +26,7 @@ export async function POST(req: Request) {
         };
 
         const converter = fileFormatConverters.get(file.type);
-        if (!converter) throw new Error(`No handler for file type: ${file.type}`);
+        if (!converter) return new NextResponse(`File not of allowed type`, { status: 400 });
 
         const convertedFile = await converter(file);            // Convert the file to KEPUB format if necessary
         const bookID = await generateUniqueIdentifier(file);    // Generate a unique file ID based on the file's content, we use file instead of convertedFile here because kebupify is nondeterministic
@@ -40,9 +40,6 @@ export async function POST(req: Request) {
         }
 
         const insertionResult = await insertBook(bookID, data.metadata, coverWriteResult);      // Finally we insert the book into the database
-
-
-
 
         if(insertionResult instanceof Error) {
             console.error(`Error inserting book: ${insertionResult.message}`);
