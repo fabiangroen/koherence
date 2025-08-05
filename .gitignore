@@ -45,3 +45,6 @@ public/covers/TheAnxietyOfInfluence.jpg
 public/covers/Dune3.jpg
 koherence.db
 public/books/*
+storage/koherence.db
+storage/books/*
+
