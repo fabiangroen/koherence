@@ -47,4 +47,4 @@ koherence.db
 public/books/*
 storage/koherence.db
 storage/books/*
-
+.prettierrc
