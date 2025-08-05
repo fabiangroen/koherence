@@ -17,7 +17,7 @@ export async function insertBook(
         language: metadata.language || 'unknown',
         publisher: metadata.publisher || 'unknown',
         subjects: metadata.subjects?.join(', ') || 'unknown',
-        imageFileExtension: imageFileExtension || '.jpg',
+        imageFileExtension: imageFileExtension.replace('.', '') || '.jpg',
       })
       .run();
     return undefined;
