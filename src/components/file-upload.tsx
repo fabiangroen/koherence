@@ -16,25 +16,25 @@ export default function FileUpload() {
   };
 
   const handleSubmit = async () => {
-    toast.info('Uploading files...');
     if (!files || files.length === 0) return;
     const formData = new FormData();
     files.forEach((file) => formData.append('file', file));
-    try {
-      const res = await fetch('/api/upload', {
+
+    await toast.promise(
+      fetch('/api/upload', {
         method: 'POST',
         body: formData,
-      });
-      const data = await res.json();
-      console.log(data);
-      if (res.ok) {
-        toast.success('Files uploaded successfully');
-      } else {
-        toast.error('Upload failed');
+      }).then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) throw new Error('Upload failed');
+        return data;
+      }),
+      {
+        loading: 'Uploading files...',
+        success: (data) => 'Files uploaded successfully',
+        error: 'Upload failed',
       }
-    } catch (err) {
-      toast.error('Upload failed');
-    }
+    );
   };
 
   return (
