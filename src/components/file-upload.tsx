@@ -3,7 +3,8 @@
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { useRouter } from 'next/navigation';
+import { Dialog, DialogContent, DialogTitle, DialogTrigger, DialogClose } from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import { Dropzone, DropzoneContent, DropzoneEmptyState } from '@/components/ui/shadcn-io/dropzone';
 
@@ -14,6 +15,7 @@ export default function FileUpload() {
     //console.log(files);
     setFiles(files);
   };
+  const router = useRouter();
 
   const handleSubmit = async () => {
     if (!files || files.length === 0) return;
@@ -26,13 +28,24 @@ export default function FileUpload() {
         body: formData,
       }).then(async (res) => {
         const data = await res.json();
-        if (!res.ok) throw new Error('Upload failed');
+        if (!res.ok) {
+          // Handle structured errors from API
+          if (data.error) {
+            throw new Error(data.message || 'Upload failed');
+          }
+          throw new Error('Upload failed');
+        }
         return data;
       }),
       {
         loading: 'Uploading files...',
-        success: (data) => 'Files uploaded successfully',
-        error: 'Upload failed',
+        success: () => {
+          router.refresh(); 
+          return 'Files uploaded successfully';
+        },
+        error: (error) => {
+          return error.message || 'Upload failed';
+        },
       }
     );
   };
@@ -57,13 +70,15 @@ export default function FileUpload() {
           }}
           maxFiles={10}
           onDrop={handleDrop}
-          onError={() => toast.error('Invalid file type, please update .epub or .kepub files')}
+          onError={() => toast.error('Invalid file type, please upload .epub or .kepub files')}
           src={files}
         >
           <DropzoneEmptyState />
           <DropzoneContent />
         </Dropzone>
-        <Button onClick={handleSubmit}>Submit</Button>
+        <DialogClose asChild>
+          <Button onClick={handleSubmit} disabled={!files || files.length === 0}>Submit</Button>
+        </DialogClose>
       </DialogContent>
     </Dialog>
   );
