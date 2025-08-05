@@ -10,9 +10,9 @@ export async function GET(req: NextRequest, { params }: { params: { id: string; 
         return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const id = params.id;
-    const ext = params.ext;
-    const imagePath = path.join(process.cwd(), "storage/books", id, `cover.${ext}`);
+    const {id, ext} = await params; // IDE says the await is unnecessary here, it isn't. Otherwise you get Error: Route "/api/cover/[id]/[ext]" used `params.ext`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    const imagePath = path.join(process.cwd(), "storage", "books", id, `cover.${ext}`);
+
     try {
         const image = await fs.readFile(imagePath);
         return new NextResponse(image, {

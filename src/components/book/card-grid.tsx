@@ -6,15 +6,6 @@ import { books as booksTable } from "@/db/schema";
 
 import FileUpload from "@/components/file-upload";
 
-/* const books: Book[] = [
-    {
-        author: "Frank Herbert",
-        title: "Dune",
-        releaseYear: 1965,
-        coverImg: "/covers/Dune1.jpg",
-    },
-]; */
-
 
 
 export default async function CardGrid() {
@@ -38,7 +29,7 @@ export default async function CardGrid() {
         author: b.creator,
         title: b.title,
         releaseDate: b.releasedate.slice(0,4),
-        coverImg: `/api/cover/${b.id}/${b.imageFileExtension}`,
+        coverImg: `/api/cover/${b.id}/${b.imageFileExtension.replace('.', '')}/`,
     }));
     return (
         <main className="flex flex-1 flex-col items-center relative">
