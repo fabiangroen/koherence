@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { epubToKepub, extractMetadata, generateUniqueFileName, writeKepubFile } from "@/lib/backendUtils";
+import { epubToKepub, extractCoverImage, extractMetadata, generateUniqueIdentifier, writeKepubFile } from "@/lib/backendUtils";
 import { insertBook } from "@/db/insertions";
 
 // Map of MIME types to handlers for processing that type of file
@@ -29,14 +29,24 @@ export async function POST(req: Request) {
         if (!converter) throw new Error(`No handler for file type: ${file.type}`);
 
         const convertedFile = await converter(file);            // Convert the file to KEPUB format if necessary
-        const fileName = await generateUniqueFileName(file);    // Generate a unique file name based on the file's content, we use file instead of convertedFile here because kebupify is nondeterministic
-        await writeKepubFile(convertedFile, fileName);          // Now we write this kepub file to the public/books folder
-        const metadata = await extractMetadata(fileName);       // And we extract metadata from the newly written file
-        const result = await insertBook(fileName, metadata);    // Finally we insert the book into the database
+        const bookID = await generateUniqueIdentifier(file);    // Generate a unique file ID based on the file's content, we use file instead of convertedFile here because kebupify is nondeterministic
+        await writeKepubFile(convertedFile, bookID);            // Now we write this kepub file to the public/books folder
+        const data = await extractMetadata(bookID);             // And we extract metadata and the manifest from the newly written file
+        const coverWriteResult = await extractCoverImage(data, bookID);       // We also extract the cover image from the file, this is optional so we don't check for it
 
-        if(result instanceof Error) {
-            console.error(`Error inserting book: ${result.message}`);
-            return new NextResponse(`Error inserting book: ${result.message}`, { status: 500 });
+        if (coverWriteResult instanceof Error) {
+            console.error(`Error extracting cover image for book with ID ${bookID}`);
+            return new NextResponse(`Error extracting cover image for book with ID ${bookID}`, { status: 500 });
+        }
+
+        const insertionResult = await insertBook(bookID, data.metadata, coverWriteResult);      // Finally we insert the book into the database
+
+
+
+
+        if(insertionResult instanceof Error) {
+            console.error(`Error inserting book: ${insertionResult.message}`);
+            return new NextResponse(`Error inserting book: ${insertionResult.message}`, { status: 500 });
         }
     }
     return NextResponse.json({ success: true});

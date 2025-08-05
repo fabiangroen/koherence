@@ -51,56 +51,96 @@ import crypto from "crypto";
  * @param file File object for which to generate name
  * @returns Promise that resolves to the generated filename
  */
-export async function generateUniqueFileName(file: File): Promise<string> {
+export async function generateUniqueIdentifier(file: File): Promise<string> {
   const contentBuffer = Buffer.from(await file.arrayBuffer());
   const hash = crypto.createHash("sha256").update(contentBuffer).digest("hex").slice(0, 12); // 12 chars is probably enough to avoid collisions, as it allows for 2^96 different values
-  
-  const extension = path.extname(file.name);
-  const fileName = `${hash}${extension}`;
 
-  return fileName;
+  return hash;
 }
 
 
-const folderPath = path.join(process.cwd(), "public", "books");
+const folderPath = path.join(process.cwd(), "storage", "books");
 
 /**
- * Writes a Kepub file to the public/books folder.
+ * Writes a Kepub file to the storage/books folder.
  * @param file File object representing the KEPUB file.
- * @param fileName The name to use for the file when writing it.
- * @returns Promise that resolves to the file path where the KEPUB file was written.
+ * @param uniqueID A unique identifier for the file which is used to create a unique subdirectory.
  */
-export async function writeKepubFile(file: File, fileName: string): Promise<string> {
-  await fs.mkdir(folderPath, { recursive: true }); // Ensure directory exists
+export async function writeKepubFile(file: File, uniqueID: string): Promise<void> {
+  const dirPath = path.join(folderPath, uniqueID);
+  await fs.mkdir(dirPath, { recursive: true }); // Ensure subdirectory exists
 
-  const filePath = path.join(folderPath, fileName);
+  const filePath = path.join(dirPath, 'book.epub');
 
   try {
     await fs.access(filePath);
-    console.warn(`Warning: File ${fileName} already exists, aborting write to it`);
+    console.warn(`Warning: File with ID ${uniqueID} already exists, aborting write to it`);
   } catch (err) {
     // File does not exist, so we can make it
     await fs.writeFile(filePath, Buffer.from(await file.arrayBuffer()));
   }
-
-  
-  return fileName;
 }
 
 import  EPub  from 'epub';
+
+interface EpubData {
+  metadata: any;
+  manifest: any;
+}
+
 /**
- * Extracts metadata from a KEPUB file.
- * @param filename filename of the KEPUB file to extract metadata from.
- * @returns Promise that resolves to an object containing the metadata.
+ * Extracts metadata and manifest from a KEPUB file.
+ * @param bookID Name of the directory where the KEPUB file is stored.
+ * @returns Promise that resolves to an object containing metadata and manifest.
  */
-export async function extractMetadata(filename: string): Promise<EPub.Metadata> {
-  const epub = new EPub(path.join(folderPath, filename));
+export async function extractMetadata(bookID: string): Promise<EpubData> {
+  const epub = new EPub(path.join(folderPath, bookID, 'book.epub'));
 
   return new Promise((resolve, reject) => {
     epub.on('end', () => {
-      resolve(epub.metadata);
+      resolve({
+        metadata: epub.metadata,
+        manifest: epub.manifest
+      });
     });
     epub.on('error', reject);
     epub.parse();
   });
+}
+
+import AdmZip from 'adm-zip';
+
+/**
+ * Extracts cover image from a KEPUB file.
+ * @param data EpubData object containing metadata and manifest.
+ * @param bookID Name of the directory where the KEPUB file is stored.
+ * @returns Promise that resolves to an object referencing the cover image file or an Error if no cover image is found.
+ */
+export async function extractCoverImage(data: EpubData, bookID: string): Promise<string | Error> {
+  // The metadata has a cover property, which is not the name of the cover file but id of an item in the manifest of the metadata file
+  // The item with that id then contains the name of the cover file
+  // For example, if the metadata.cover is "cover-image", there might be something like this in the manifest: 
+  // <item id="cover-image" properties="cover-image" href="bookcover-generated.jpg" media-type="image/jpeg"/>\
+  const metadata: any = data.metadata;
+  const manifest = data.manifest
+  const coverItemName = metadata.cover || "cover-image"     // This would be "cover-image" in the example above
+  const imageFilePath = manifest[coverItemName]?.href;      // This is the name of the cover file in the manifest
+
+  if (!imageFilePath) {
+      return new Error(`No cover image found`);
+  }
+
+  const bookFolderPath = path.join(folderPath, bookID);
+  const bookFilePath = path.join(bookFolderPath, 'book.epub');
+
+  const zip = new AdmZip(bookFilePath);
+  const imageEntry = zip.getEntry(imageFilePath);
+  if (!imageEntry) {
+    throw new Error(`Cover image "${imageFilePath}" not found in archive`);
+  }
+  const fileExtension = path.extname(imageFilePath);
+  const outputPath = path.join(bookFolderPath, `cover${fileExtension}`);
+  await fs.writeFile(outputPath, imageEntry.getData());
+
+  return fileExtension
 }

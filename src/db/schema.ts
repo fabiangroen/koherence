@@ -1,14 +1,14 @@
 import { sqliteTable, text, int } from "drizzle-orm/sqlite-core";
 
 export const books = sqliteTable("books", {
-    id: int("id").primaryKey(),
     title: text("title").notNull(),
     creator: text("creator").notNull(),
     releasedate: text("releasedate").notNull(),
     language: text("language").notNull(),
     publisher: text("publisher").notNull(),
     subjects: text("subjects").notNull(),
-    filename: text("filename").notNull(),
+    id: text("id").primaryKey(),
+    imageFileExtension: text("image_file_extension").notNull(),
 });
 
 export const devices = sqliteTable("devices", {
