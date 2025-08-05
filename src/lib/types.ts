@@ -1,13 +1,6 @@
 export type Book = {
     author: string;
     title: string;
-    releaseYear: number;
+    releaseDate: string;
     coverImg: string; // currently stored as a path to an image, with as root the public/covers/ directory
 };
-
-export interface BookProps {
-    title: string;
-    author: string;
-    year: string;
-    imageSrc: string;
-}

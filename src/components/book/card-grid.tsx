@@ -18,8 +18,7 @@ import FileUpload from "@/components/file-upload";
 
 
 export default async function CardGrid() {
-    // TOOD: Adjust this to the new database schema
-    /*const session = await auth()
+    const session = await auth()
 
     if (!session?.user) return (
         <main className="flex flex-1 justify-center">
@@ -34,7 +33,13 @@ export default async function CardGrid() {
             <p className="mt-8 text-muted-foreground">You are not allowed to view this content</p>
         </main>
     )
-    const books: Book[] = await db.select().from(booksTable);
+    const rawBooks = await db.select().from(booksTable);
+    const books: Book[] = rawBooks.map((b) => ({
+        author: b.creator,
+        title: b.title,
+        releaseDate: b.releasedate.slice(0,4),
+        coverImg: `/covers/${b.filename}`,
+    }));
     return (
         <main className="flex flex-1 flex-col items-center relative">
             <p className="mt-8 text-muted-foreground mb-6">
@@ -45,13 +50,6 @@ export default async function CardGrid() {
                     <BookCard key={index} book={book} />
                 ))}
             </div>
-            <div className="absolute top-4 right-4">
-                <FileUpload />
-            </div>
-        </main>
-    );*/
-    return (
-        <main className="flex flex-1 flex-col items-center relative">
             <div className="absolute top-4 right-4">
                 <FileUpload />
             </div>

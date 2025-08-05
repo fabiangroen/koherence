@@ -16,7 +16,7 @@ import {
 import type { Book } from '@/lib/types';
 
 export function BookCard({ book }: { book: Book }) {
-    const { title, author, releaseYear, coverImg } = book;
+    const { title, author, releaseDate, coverImg } = book;
 
     return (
         <Dialog>
@@ -32,7 +32,7 @@ export function BookCard({ book }: { book: Book }) {
                         />
                         <div className="text-base text-center">{title}</div>
                         <div className="text-xs text-center -mt-1 mb-2 text-muted-foreground">
-                            {author} &middot; {releaseYear}
+                            {author} &middot; {releaseDate}
                         </div>
                     </CardHeader>
                 </Card>
@@ -59,7 +59,7 @@ export function BookCard({ book }: { book: Book }) {
                                 <div className="flex-1 space-y-3">
                                     <div>
                                         <DialogTitle className="text-lg font-semibold leading-tight">{title}</DialogTitle>
-                                        <DialogDescription className="text-sm text-muted-foreground">{author} &middot; {releaseYear}</DialogDescription>
+                                        <DialogDescription className="text-sm text-muted-foreground">{author} &middot; {releaseDate}</DialogDescription>
                                     </div>
                                     <Separator />
                                     <div className="flex-1 space-y-3">
