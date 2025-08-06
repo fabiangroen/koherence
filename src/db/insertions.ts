@@ -16,7 +16,7 @@ export async function insertBook(
         releasedate: metadata.date || "unknown",
         language: metadata.language || "unknown",
         publisher: metadata.publisher || "unknown",
-        subjects: metadata.subjects?.join(", ") || "unknown",
+        subjects: metadata.subject || metadata.subjects instanceof Array? metadata.subjects?.join(", ") : metadata.subjects || "unknown",
         imageFileExtension: imageFileExtension.replace(".", "") || ".jpg",
       })
       .run();
