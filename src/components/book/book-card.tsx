@@ -91,11 +91,9 @@ export function BookCard({ book }: { book: Book }) {
               {author} · {releaseDate}
             </DialogDescription>
           </div>
-          <div className="border-t my-2" />
-          <div className="space-y-3">
-            <h4 className="font-medium text-sm">Sync to devices</h4>
-            <DeviceForm />
-          </div>
+          <div className="border-t" />
+          <h4 className="font-medium text-sm">Sync to devices</h4>
+          <DeviceForm />
         </div>
       </DialogContent>
     </Dialog>

@@ -7,6 +7,7 @@ import SignIn from "@/components/sign-button";
 import { auth } from "@/auth";
 import { Toaster } from "@/components/ui/sonner";
 import Link from "next/link";
+import { SessionProvider } from "next-auth/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -65,10 +66,12 @@ export default async function RootLayout({
               },
             }}
           />
-          <div className="min-h-screen flex flex-col">
-            <Header />
-            {children}
-          </div>
+          <SessionProvider>
+            <div className="min-h-screen flex flex-col">
+              <Header />
+              {children}
+            </div>
+          </SessionProvider>
         </ThemeProvider>
       </body>
     </html>
