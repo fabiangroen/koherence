@@ -1,22 +1,51 @@
-import { auth } from '@/auth';
-import { db } from '@/db';
-import { NextResponse } from 'next/server';
+import { auth } from "@/auth";
+import { db } from "@/db";
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   const session = await auth();
-  const admin = process.env.ADMIN?.split(',').map((email) => email.trim()) || [];
-  const isAdmin = admin.includes(session?.user?.email ?? '');
+  const admin =
+    process.env.ADMIN?.split(",").map((email) => email.trim()) || [];
+  const isAdmin = admin.includes(session?.user?.email ?? "");
   if (!isAdmin) {
-    return new NextResponse('Unauthorized', { status: 401 });
+    return new NextResponse("Unauthorized", { status: 401 });
   }
 
-  const { query } = await req.json();
-
   try {
-    const result = await db.run(query);
-    return NextResponse.json(result);
+    // Handle JSON request
+    const { query } = await req.json();
+
+    if (!query) {
+      return NextResponse.json(
+        { success: false, message: "Query parameter is required" },
+        { status: 400 },
+      );
+    }
+
+    try {
+      const result = await db.run(query);
+      return NextResponse.json({ success: true, result });
+    } catch (error: any) {
+      console.error("Database query error:", error);
+
+      // Extract the actual SQL error from the cause property
+      let errorMessage = error.message;
+      if (error.cause?.cause?.message) {
+        errorMessage = error.cause.cause.message;
+      } else if (error.cause?.message) {
+        errorMessage = error.cause.message;
+      }
+
+      return NextResponse.json(
+        { success: false, message: errorMessage },
+        { status: 400 },
+      );
+    }
   } catch (error: any) {
-    console.error('Database query error:', error);
-    return new NextResponse(error.message, { status: 500 });
+    console.error("Request parsing error:", error);
+    return NextResponse.json(
+      { success: false, message: "Invalid request format" },
+      { status: 400 },
+    );
   }
 }

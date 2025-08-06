@@ -1,10 +1,16 @@
-import React from 'react';
-import { Card, CardHeader } from '@/components/ui/card';
-import Image from 'next/image';
-import DeviceForm from '@/components/book/device-form';
-import { Separator } from '@/components/ui/separator';
-import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import type { Book } from '@/lib/types';
+import React from "react";
+import { Card, CardHeader } from "@/components/ui/card";
+import Image from "next/image";
+import DeviceForm from "@/components/book/device-form";
+import { Separator } from "@/components/ui/separator";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import type { Book } from "@/lib/types";
 
 export function BookCard({ book }: { book: Book }) {
   const { title, author, releaseDate, coverImg } = book;
@@ -35,7 +41,13 @@ export function BookCard({ book }: { book: Book }) {
             <div className="flex gap-6 mb-4">
               {/* Book Cover */}
               <div className="flex-shrink-0">
-                <Image src={coverImg} alt={title} width={128} height={176} className="rounded-xl object-cover" />
+                <Image
+                  src={coverImg}
+                  alt={title}
+                  width={128}
+                  height={176}
+                  className="rounded-xl object-cover"
+                />
               </div>
 
               {/* Book Details and Device Sync Side by Side */}
@@ -43,7 +55,9 @@ export function BookCard({ book }: { book: Book }) {
                 {/* Book Information */}
                 <div className="flex-1 space-y-3">
                   <div>
-                    <DialogTitle className="text-lg font-semibold leading-tight">{title}</DialogTitle>
+                    <DialogTitle className="text-lg font-semibold leading-tight">
+                      {title}
+                    </DialogTitle>
                     <DialogDescription className="text-sm text-muted-foreground">
                       {author} &middot; {releaseDate}
                     </DialogDescription>

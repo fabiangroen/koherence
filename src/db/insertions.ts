@@ -1,5 +1,5 @@
-import { db } from '@/db';
-import { books as booksTable } from '@/db/schema';
+import { db } from "@/db";
+import { books as booksTable } from "@/db/schema";
 
 export async function insertBook(
   bookID: string,
@@ -11,13 +11,13 @@ export async function insertBook(
       .insert(booksTable)
       .values({
         id: bookID,
-        title: metadata.title || 'unknown',
-        creator: metadata.creator || 'unknown',
-        releasedate: metadata.date || 'unknown',
-        language: metadata.language || 'unknown',
-        publisher: metadata.publisher || 'unknown',
-        subjects: metadata.subjects?.join(', ') || 'unknown',
-        imageFileExtension: imageFileExtension.replace('.', '') || '.jpg',
+        title: metadata.title || "unknown",
+        creator: metadata.creator || "unknown",
+        releasedate: metadata.date || "unknown",
+        language: metadata.language || "unknown",
+        publisher: metadata.publisher || "unknown",
+        subjects: metadata.subjects?.join(", ") || "unknown",
+        imageFileExtension: imageFileExtension.replace(".", "") || ".jpg",
       })
       .run();
     return undefined;

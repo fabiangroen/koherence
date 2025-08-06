@@ -30,21 +30,25 @@ These instructions will get you a copy of the project up and running on your loc
 ### Installation
 
 1.  **Clone the repository:**
+
     ```bash
     git clone https://github.com/your-username/koherence.git
     cd koherence
     ```
 
 2.  **Install dependencies:**
+
     ```bash
     npm install
     ```
 
 3.  **Set up environment variables:**
     Create a `.env.local` file in the root of the project by copying the example file:
+
     ```bash
     cp EXAMPLE.env.local .env.local
     ```
+
     Update the `.env.local` file with your database credentials and Google OAuth credentials.
 
 4.  **Run the development server:**
@@ -56,28 +60,28 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Environment Variables
 
--   `DATABASE`: The connection string for your database.
--   `GOOGLE_CLIENT_ID`: Your Google OAuth client ID.
--   `GOOGLE_CLIENT_SECRET`: Your Google OAuth client secret.
+- `DATABASE`: The connection string for your database.
+- `GOOGLE_CLIENT_ID`: Your Google OAuth client ID.
+- `GOOGLE_CLIENT_SECRET`: Your Google OAuth client secret.
 
 ## Available Scripts
 
 In the project directory, you can run:
 
--   `npm run dev`: Runs the app in development mode with Turbopack.
--   `npm run build`: Builds the app for production.
--   `npm run start`: Starts a production server.
--   `npm run lint`: Lints the code using Next.js's built-in ESLint configuration.
+- `npm run dev`: Runs the app in development mode with Turbopack.
+- `npm run build`: Builds the app for production.
+- `npm run start`: Starts a production server.
+- `npm run lint`: Lints the code using Next.js's built-in ESLint configuration.
 
 ## Technologies Used
 
--   [Next.js](https://nextjs.org/) - React framework for production
--   [React](https://reactjs.org/) - A JavaScript library for building user interfaces
--   [TypeScript](https://www.typescriptlang.org/) - Typed superset of JavaScript
--   [Drizzle ORM](https://orm.drizzle.team/) - TypeScript ORM for SQL databases
--   [NextAuth.js](https://next-auth.js.org/) - Authentication for Next.js
--   [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework
--   [shadcn/ui](https://ui.shadcn.com/) - Re-usable components built using Radix UI and Tailwind CSS.
+- [Next.js](https://nextjs.org/) - React framework for production
+- [React](https://reactjs.org/) - A JavaScript library for building user interfaces
+- [TypeScript](https://www.typescriptlang.org/) - Typed superset of JavaScript
+- [Drizzle ORM](https://orm.drizzle.team/) - TypeScript ORM for SQL databases
+- [NextAuth.js](https://next-auth.js.org/) - Authentication for Next.js
+- [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework
+- [shadcn/ui](https://ui.shadcn.com/) - Re-usable components built using Radix UI and Tailwind CSS.
 
 ## Database
 
@@ -85,13 +89,13 @@ In the project directory, you can run:
 
 The database schema is defined in `src/db/schema.ts` and includes the following tables:
 
--   `books`: Stores information about the e-books.
--   `devices`: Stores information about user devices.
--   `device_access`: Manages which users have access to which devices.
--   `book_device_sync`: Tracks the synchronization status of books across devices.
--   `users`: Stores user information.
--   `sessions`: Stores user sessions for authentication.
--   `accounts`: Stores provider accounts for users.
+- `books`: Stores information about the e-books.
+- `devices`: Stores information about user devices.
+- `device_access`: Manages which users have access to which devices.
+- `book_device_sync`: Tracks the synchronization status of books across devices.
+- `users`: Stores user information.
+- `sessions`: Stores user sessions for authentication.
+- `accounts`: Stores provider accounts for users.
 
 ### Migrations
 
