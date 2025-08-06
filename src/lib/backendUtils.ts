@@ -64,7 +64,7 @@ export async function generateUniqueIdentifier(file: File): Promise<string> {
 }
 
 const folderPath = path.join(process.cwd(), "storage", "books");
-
+const bookFileName = "book.kepub.epub"; // We keep this the same for all books
 /**
  * Writes a Kepub file to the storage/books folder.
  * @param file File object representing the KEPUB file.
@@ -77,7 +77,7 @@ export async function writeKepubFile(
   const dirPath = path.join(folderPath, uniqueID);
   await fs.mkdir(dirPath, { recursive: true }); // Ensure subdirectory exists
 
-  const filePath = path.join(dirPath, "book.epub");
+  const filePath = path.join(dirPath, bookFileName);
 
   try {
     await fs.access(filePath);
@@ -103,7 +103,7 @@ interface EpubData {
  * @returns Promise that resolves to an object containing metadata and manifest.
  */
 export async function extractMetadata(bookID: string): Promise<EpubData> {
-  const epub = new EPub(path.join(folderPath, bookID, "book.epub"));
+  const epub = new EPub(path.join(folderPath, bookID, bookFileName));
 
   return new Promise((resolve, reject) => {
     epub.on("end", () => {
@@ -143,7 +143,7 @@ export async function extractCoverImage(
   }
 
   const bookFolderPath = path.join(folderPath, bookID);
-  const bookFilePath = path.join(bookFolderPath, "book.epub");
+  const bookFilePath = path.join(bookFolderPath, bookFileName);
 
   const zip = new AdmZip(bookFilePath);
   const imageEntry = zip.getEntry(imageFilePath);
