@@ -23,7 +23,7 @@ fileFormatConverters.set("application/octet-stream", async (file) => file); // a
 
 export async function POST(req: Request) {
   const session = await auth();
-  
+
   if (!session) {
     return new NextResponse("You must be logged in to upload a book", {
       status: 401,
@@ -75,21 +75,18 @@ export async function POST(req: Request) {
     const data = await extractMetadata(bookID); // And we extract metadata and the manifest from the newly written file
     const coverWriteResult = await extractCoverImage(data, bookID); // We also extract the cover image from the file, this is optional so we don't check for it
 
+    let coverImagePath: string;
     if (coverWriteResult instanceof Error) {
-      console.error(`Error extracting cover image for book with ID ${bookID}`);
-      return new NextResponse(
-        JSON.stringify({
-          error: "COVER_EXTRACTION_FAILED",
-          message: `Error extracting cover image for book with ID ${bookID}`,
-        }),
-        { status: 500, headers: { "Content-Type": "application/json" } },
-      );
+      console.error(`Error extracting cover image for book with ID ${bookID}: ${coverWriteResult.message}`);
+      coverImagePath = 'none';
+    } else {
+      coverImagePath = coverWriteResult;
     }
 
     const insertionResult = await insertBook(
       bookID,
       data.metadata,
-      coverWriteResult,
+      coverImagePath,
     ); // Finally we insert the book into the database
 
     if (insertionResult instanceof Error) {
