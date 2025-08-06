@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import { useState } from "react";
 import {
   Card,
@@ -78,12 +78,12 @@ export function QueryForm() {
             </tr>
           </thead>
           <tbody>
-            {rows.map((row: any, rowIndex: number) => ( 
+            {rows.map((row: any, rowIndex: number) => (
               <tr key={rowIndex} className={rowIndex % 2 === 0 ? "bg-background" : "bg-muted/50"}>
                 {columns.map((column, columnIndex) => (
                   <td key={`${rowIndex}-${columnIndex}`} className="border p-2">
-                    {typeof row[columnIndex] === 'object' 
-                      ? JSON.stringify(row[columnIndex]) 
+                    {typeof row[columnIndex] === 'object'
+                      ? JSON.stringify(row[columnIndex])
                       : String(row[columnIndex])}
                   </td>
                 ))}

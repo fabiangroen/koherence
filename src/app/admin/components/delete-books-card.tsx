@@ -24,7 +24,7 @@ import { toast } from "sonner";
 export function DeleteBooksCard() {
   const handleDelete = async () => {
     try {
-      const response = await fetch("/api/delete-all-books", {
+      const response = await fetch("/api/db/delete-all-books", {
         method: "POST",
       });
 
