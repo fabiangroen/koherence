@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
+import { toast, Toaster } from "sonner";
 import { useState } from "react";
 import {
   Card,
@@ -44,16 +44,55 @@ export function QueryForm() {
         throw new Error(data.message || "Failed to execute query");
       }
 
-      // Format the result for display
-      const resultString = JSON.stringify(data.result, null, 2);
       return {
         message: "Query executed successfully",
-        result: resultString,
+        result: data.result,
       };
     } catch (error: unknown) {
       console.error("Error executing query:", error);
       throw new Error((error as Error).message || "Failed to execute query");
     }
+  };
+
+  // Helper function to render results as a table
+  const renderResultsAsTable = (results: any) => {
+    console.log("Results1:", results);
+    if (!results || results.length === 0) {
+      return <div className="text-muted-foreground">No results found</div>;
+    }
+
+    // Get column names from the first row
+    const columns: string[] = results.columns;
+    const rows = results.rows;
+
+    return (
+      <div className="overflow-x-auto">
+        <table className="min-w-full border">
+          <thead>
+            <tr className="bg-muted">
+              {columns.map((column) => (
+                <th key={column} className="border p-2 text-left">
+                  {column}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row: any, rowIndex: number) => ( 
+              <tr key={rowIndex} className={rowIndex % 2 === 0 ? "bg-background" : "bg-muted/50"}>
+                {columns.map((column, columnIndex) => (
+                  <td key={`${rowIndex}-${columnIndex}`} className="border p-2">
+                    {typeof row[columnIndex] === 'object' 
+                      ? JSON.stringify(row[columnIndex]) 
+                      : String(row[columnIndex])}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
   };
 
   return (
@@ -121,7 +160,7 @@ export function QueryForm() {
                               {data.message}
                             </div>
                             <pre className="bg-muted p-2 rounded-md whitespace-pre-wrap max-h-64 overflow-y-auto">
-                              {data.result}
+                              {renderResultsAsTable(data.result)}
                             </pre>
                           </div>
                         );
