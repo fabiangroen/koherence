@@ -37,9 +37,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     signIn({ profile }) {
       return whitelist.includes(profile?.email ?? "") ||
-        admin.includes(profile?.email ?? "")
-        ? true
-        : false;
+        admin.includes(profile?.email ?? "");
     },
   },
 });

@@ -8,9 +8,8 @@ export async function GET(
   { params }: { params: { id: string; ext: string } },
 ) {
   const session = await auth();
-  const whitelist =
-    process.env.WHITELIST?.split(",").map((email) => email.trim()) || [];
-  if (!session?.user || !whitelist.includes(session.user.email ?? "")) {
+
+  if (!session?.user) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 

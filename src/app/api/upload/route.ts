@@ -23,10 +23,8 @@ fileFormatConverters.set("application/octet-stream", async (file) => file); // a
 
 export async function POST(req: Request) {
   const session = await auth();
-  const whitelist =
-    process.env.WHITELIST?.split(",").map((email) => email.trim()) || [];
-  const isWhiteListed = whitelist.includes(session?.user?.email ?? "");
-  if (!isWhiteListed) {
+  
+  if (!session) {
     return new NextResponse("You must be logged in to upload a book", {
       status: 401,
     });

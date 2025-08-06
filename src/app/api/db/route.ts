@@ -4,10 +4,8 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   const session = await auth();
-  const admin =
-    process.env.ADMIN?.split(",").map((email) => email.trim()) || [];
-  const isAdmin = admin.includes(session?.user?.email ?? "");
-  if (!isAdmin) {
+
+  if (session?.user?.role!='admin') {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
