@@ -9,7 +9,7 @@ export async function POST(req: Request) {
   // Add authorization validation
   const session = await auth();
 
-  if (session?.user?.role!='admin') {
+  if (session?.user?.role != "admin") {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 

@@ -17,11 +17,12 @@ export async function insertBook(
         language: metadata.language || "unknown",
         publisher: metadata.publisher || "unknown",
         subjects:
-          metadata.subject ?? (Array.isArray(metadata.subjects)
+          metadata.subject ??
+          (Array.isArray(metadata.subjects)
             ? metadata.subjects.join(", ")
             : typeof metadata.subjects === "string"
-            ? metadata.subjects
-            : "unknown"),
+              ? metadata.subjects
+              : "unknown"),
         imageFileExtension: imageFileExtension.replace(".", "") || ".jpg",
       })
       .run();

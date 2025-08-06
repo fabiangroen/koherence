@@ -79,10 +79,13 @@ export function QueryForm() {
           </thead>
           <tbody>
             {rows.map((row: any, rowIndex: number) => (
-              <tr key={rowIndex} className={rowIndex % 2 === 0 ? "bg-background" : "bg-muted/50"}>
+              <tr
+                key={rowIndex}
+                className={rowIndex % 2 === 0 ? "bg-background" : "bg-muted/50"}
+              >
                 {columns.map((column, columnIndex) => (
                   <td key={`${rowIndex}-${columnIndex}`} className="border p-2">
-                    {typeof row[columnIndex] === 'object'
+                    {typeof row[columnIndex] === "object"
                       ? JSON.stringify(row[columnIndex])
                       : String(row[columnIndex])}
                   </td>

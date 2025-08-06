@@ -36,8 +36,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session;
     },
     signIn({ profile }) {
-      return whitelist.includes(profile?.email ?? "") ||
-        admin.includes(profile?.email ?? "");
+      return (
+        whitelist.includes(profile?.email ?? "") ||
+        admin.includes(profile?.email ?? "")
+      );
     },
   },
 });

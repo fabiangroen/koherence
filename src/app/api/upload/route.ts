@@ -77,8 +77,10 @@ export async function POST(req: Request) {
 
     let coverImagePath: string;
     if (coverWriteResult instanceof Error) {
-      console.error(`Error extracting cover image for book with ID ${bookID}: ${coverWriteResult.message}`);
-      coverImagePath = 'none';
+      console.error(
+        `Error extracting cover image for book with ID ${bookID}: ${coverWriteResult.message}`,
+      );
+      coverImagePath = "none";
     } else {
       coverImagePath = coverWriteResult;
     }

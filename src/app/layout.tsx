@@ -55,13 +55,16 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${SatisfyRegular.variable} antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Toaster richColors 
-          toastOptions={{ // For admin panel
-            style: {
-              width: "max-content",
-              maxWidth: "90vw",
-            },
-          }}/>
+          <Toaster
+            richColors
+            toastOptions={{
+              // For admin panel
+              style: {
+                width: "max-content",
+                maxWidth: "90vw",
+              },
+            }}
+          />
           <div className="min-h-screen flex flex-col">
             <Header />
             {children}
