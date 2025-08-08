@@ -1,4 +1,4 @@
-import { sqliteTable, text, int } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 
 export const books = sqliteTable("books", {
   title: text("title").notNull(),
@@ -12,24 +12,32 @@ export const books = sqliteTable("books", {
 });
 
 export const devices = sqliteTable("devices", {
-  id: int("id").primaryKey(),
+  id: text("id").primaryKey(),
   name: text("name").notNull(),
   type: text("type").notNull(),
-  ownerId: int("owner_id").notNull(),
+  ownerId: text("owner_id").notNull(),
 });
 
-export const device_access = sqliteTable("device_access", {
-  deviceId: int("device_id")
-    .notNull()
-    .references(() => devices.id),
-  userId: int("user_id").notNull(),
-});
+export const deviceAccess = sqliteTable(
+  "device_access",
+  {
+    deviceId: text("device_id")
+      .notNull()
+      .references(() => devices.id),
+    userId: text("user_id").notNull(),
+  },
+  (table) => [uniqueIndex("deviceid_userid").on(table.deviceId, table.userId)]
+);
 
-export const bookDeviceSync = sqliteTable("book_device_sync", {
-  bookId: int("book_id")
-    .notNull()
-    .references(() => books.id),
-  deviceId: int("device_id")
-    .notNull()
-    .references(() => devices.id),
-});
+export const bookDeviceSync = sqliteTable(
+  "book_device_sync",
+  {
+    bookId: text("book_id")
+      .notNull()
+      .references(() => books.id),
+    deviceId: text("device_id")
+      .notNull()
+      .references(() => devices.id),
+  },
+  (table) => [uniqueIndex("bookid_deviceid").on(table.deviceId, table.bookId)]
+);

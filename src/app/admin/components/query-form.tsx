@@ -23,30 +23,24 @@ import {
 } from "@/components/ui/dialog";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { CircleAlert } from "lucide-react";
+import { queryDB } from "../actions/query-db";
 
 export function QueryForm() {
   const [query, setQuery] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const executeQuery = async () => {
     try {
-      const response = await fetch("/api/db", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ query }),
-      });
+      const response = await queryDB(query);
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Failed to execute query");
+      if (!response.success) {
+        throw new Error(response.message || "Failed to execute query");
       }
 
       return {
         message: "Query executed successfully",
-        result: data.result,
+        result: response.result,
       };
     } catch (error: unknown) {
       console.error("Error executing query:", error);
@@ -113,17 +107,22 @@ export function QueryForm() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           disabled={isSubmitting}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !isSubmitting && query.trim()) {
+              // Defer dialog open to next tick to avoid focus trap issues
+              setTimeout(() => setDialogOpen(true), 0);
+            }
+          }}
         />
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button
-              className="w-full"
-              type="button"
-              disabled={isSubmitting || !query.trim()}
-            >
-              {isSubmitting ? "Executing..." : "Run Query"}
-            </Button>
-          </DialogTrigger>
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          <Button
+            className="w-full"
+            type="button"
+            disabled={isSubmitting || !query.trim()}
+            onClick={() => setDialogOpen(true)}
+          >
+            {isSubmitting ? "Executing..." : "Run Query"}
+          </Button>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Execute SQL Query</DialogTitle>
@@ -157,6 +156,7 @@ export function QueryForm() {
                       loading: "Executing query...",
                       success: (data) => {
                         setIsSubmitting(false);
+                        setDialogOpen(false);
                         return (
                           <div>
                             <div className="font-semibold mb-2">
@@ -170,6 +170,7 @@ export function QueryForm() {
                       },
                       error: (error) => {
                         setIsSubmitting(false);
+                        setDialogOpen(false);
                         return error.message;
                       },
                     });

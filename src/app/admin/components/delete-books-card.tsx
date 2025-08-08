@@ -20,21 +20,16 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { deleteAllBooks } from "../actions/delete-all-books";
 
 export function DeleteBooksCard() {
   const handleDelete = async () => {
     try {
-      const response = await fetch("/api/db/delete-all-books", {
-        method: "POST",
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Failed to delete books");
+      const result = await deleteAllBooks();
+      if (!result.success) {
+        throw new Error(result.message || "Failed to delete books");
       }
-
-      return data.message || "All books deleted successfully";
+      return result.message || "All books deleted successfully";
     } catch (error: unknown) {
       console.error("Error deleting books:", error);
       throw new Error((error as Error).message || "Failed to delete books");
