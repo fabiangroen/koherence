@@ -29,7 +29,6 @@ export async function GetUserDevices(bookId: string) {
       checked: d.checked,
     }));
 
-    console.log(userDevices);
     if (userDevices.length === 0) {
       return { devices: null, error: "You have no devices" };
     }
