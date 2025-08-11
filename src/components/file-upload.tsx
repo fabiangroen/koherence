@@ -78,13 +78,12 @@ export default function FileUpload() {
         <Dropzone
           accept={{
             "application/epub+zip": [],
-            "application/octet-stream": [".kepub"],
           }}
           maxFiles={10}
           onDrop={handleDrop}
           onError={() =>
             toast.error(
-              "Invalid file type, please upload .epub or .kepub files",
+              "Invalid file type, please upload .epub or .kepub.epub files",
             )
           }
           src={files}
