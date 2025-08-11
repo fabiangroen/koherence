@@ -12,15 +12,6 @@ import { db } from "@/db";
 import { books as booksTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
-// Map of MIME types to handlers for processing that type of file
-const fileFormatConverters: Map<string, (file: File) => Promise<File>> =
-  new Map();
-fileFormatConverters.set(
-  "application/epub+zip",
-  async (file) => await epubToKepub(file),
-); // Convert EPUB to KEPUB
-fileFormatConverters.set("application/octet-stream", async (file) => file); // already in kepub format so we can just return it as is
-
 export async function POST(req: Request) {
   const session = await auth();
 
@@ -35,24 +26,15 @@ export async function POST(req: Request) {
 
   for (const file of files) {
     if (!(file instanceof File)) {
-      console.warn(
-        "Invalid object passed to backend, expected a File instance",
-      );
+      console.warn("Invalid object passed to backend, expected a File instance");
       continue;
     }
 
-    const converter = fileFormatConverters.get(file.type);
-    if (!converter) {
-      return new NextResponse(
-        JSON.stringify({
-          error: "INVALID_FILE_TYPE",
-          message: `File type ${file.type} is not allowed`,
-        }),
-        { status: 400, headers: { "Content-Type": "application/json" } },
-      );
+    if (file.type != "application/epub+zip") {
+      console.warn("Invalid object passed to backend, expected an EPUB file and got a file with type: ", file.type);
+      continue;
     }
-
-    const convertedFile = await converter(file); // Convert the file to KEPUB format if necessary
+    const convertedFile = await epubToKepub(file); // Convert the file to KEPUB format. Does nothing if already in KEPUB format
     const bookID = await generateUniqueIdentifier(file); // Generate a unique file ID based on the file's content, we use file instead of convertedFile here because kebupify is nondeterministic
 
     // Check if book already exists in database
