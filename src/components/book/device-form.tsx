@@ -39,8 +39,8 @@ export default function DeviceForm({ bookId }: DeviceFormProps) {
   function handleToggle(deviceId: string, checked: boolean) {
     setList((prev) =>
       prev.map((d) =>
-        d.id === deviceId ? { ...d, checked: checked } : { ...d }
-      )
+        d.id === deviceId ? { ...d, checked: checked } : { ...d },
+      ),
     );
     startTransition(async () => {
       try {
@@ -48,7 +48,9 @@ export default function DeviceForm({ bookId }: DeviceFormProps) {
         mutate();
       } catch (e) {
         setList((prev) =>
-          prev.map((d) => (d.id === deviceId ? { ...d, checked: !checked } : d))
+          prev.map((d) =>
+            d.id === deviceId ? { ...d, checked: !checked } : d,
+          ),
         );
         console.error(e);
       }

@@ -33,8 +33,8 @@ export async function setUserDevice({
         .where(
           and(
             eq(bookDeviceSync.bookId, bookId),
-            eq(bookDeviceSync.deviceId, deviceId)
-          )
+            eq(bookDeviceSync.deviceId, deviceId),
+          ),
         );
     } catch (error) {
       console.error("Error removing device sync", error);

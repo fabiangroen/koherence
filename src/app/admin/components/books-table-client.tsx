@@ -120,7 +120,7 @@ export default function BooksTableClient({ books }: Props) {
                         <DialogTitle>Are you absolutely sure?</DialogTitle>
                         <DialogDescription>
                           This action cannot be undone. This will permanently
-                          delete "{book.title}" from the database and storage.
+                          delete {book.title} from the database and storage.
                         </DialogDescription>
                       </DialogHeader>
                       <DialogFooter>

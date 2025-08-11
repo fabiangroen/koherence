@@ -49,7 +49,7 @@ export async function deleteBook(bookId: string) {
       // The book has been removed from the database, which is the primary concern
       console.warn(
         `Warning: Could not delete book directory ${bookDir}:`,
-        fileError
+        fileError,
       );
     }
 

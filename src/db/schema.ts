@@ -26,7 +26,7 @@ export const deviceAccess = sqliteTable(
       .references(() => devices.id),
     userId: text("user_id").notNull(),
   },
-  (table) => [uniqueIndex("deviceid_userid").on(table.deviceId, table.userId)]
+  (table) => [uniqueIndex("deviceid_userid").on(table.deviceId, table.userId)],
 );
 
 export const bookDeviceSync = sqliteTable(
@@ -39,5 +39,5 @@ export const bookDeviceSync = sqliteTable(
       .notNull()
       .references(() => devices.id),
   },
-  (table) => [uniqueIndex("bookid_deviceid").on(table.deviceId, table.bookId)]
+  (table) => [uniqueIndex("bookid_deviceid").on(table.deviceId, table.bookId)],
 );

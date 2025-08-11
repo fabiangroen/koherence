@@ -98,7 +98,7 @@ export function BookCard({
           </div>
           <div className="border-t" />
           <h4 className="font-medium text-sm">Sync to devices</h4>
-          <DeviceForm bookId={book.id} />
+          <DeviceForm bookId={id} />
         </div>
       </DialogContent>
     </Dialog>

@@ -20,8 +20,8 @@ export async function GetUserDevices(bookId: string) {
         bookDeviceSync,
         and(
           eq(deviceAccess.deviceId, bookDeviceSync.deviceId),
-          eq(bookDeviceSync.bookId, bookId)
-        )
+          eq(bookDeviceSync.bookId, bookId),
+        ),
       )
       .where(eq(deviceAccess.userId, session.user.id ?? ""));
     const flatDevices = userDevices.map((d) => ({

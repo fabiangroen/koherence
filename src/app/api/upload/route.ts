@@ -26,17 +26,24 @@ export async function POST(req: Request) {
 
   for (const file of files) {
     if (!(file instanceof File)) {
-      console.warn("Invalid object passed to backend, expected a File instance");
+      console.warn(
+        "Invalid object passed to backend, expected a File instance",
+      );
       continue;
     }
 
     if (file.type != "application/epub+zip") {
-      console.warn("Invalid object passed to backend, expected an EPUB file and got a file with type: ", file.type);
+      console.warn(
+        "Invalid object passed to backend, expected an EPUB file and got a file with type: ",
+        file.type,
+      );
       continue;
     }
 
     // If its a kepub file we don't need to convert, otherwise we convert it
-    const convertedFile = file.name.endsWith(".kepub.epub") ? file : await epubToKepub(file);
+    const convertedFile = file.name.endsWith(".kepub.epub")
+      ? file
+      : await epubToKepub(file);
     const bookID = await generateUniqueIdentifier(file); // Generate a unique file ID based on the file's content, we use file instead of convertedFile here because kebupify is nondeterministic
 
     // Check if book already exists in database
