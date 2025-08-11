@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import {
   Dialog,
   DialogContent,
@@ -10,12 +10,8 @@ import { Card, CardHeader } from "@/components/ui/card";
 import DeviceForm from "@/components/book/device-form";
 import type { Book } from "@/lib/types";
 import { BookImage } from "lucide-react";
-import { GetUserDevices } from "@/app/actions/get-user-devices";
-import { Skeleton } from "../ui/skeleton";
-
 export function BookCard({ book }: { book: Book }) {
   const { title, author, releaseDate, coverImg, id } = book;
-  const devicesPromise = GetUserDevices(id);
   const hasCover = !coverImg.endsWith("none");
 
   const renderCover = (size: "card" | "dialog") => {
@@ -94,9 +90,7 @@ export function BookCard({ book }: { book: Book }) {
           </div>
           <div className="border-t" />
           <h4 className="font-medium text-sm">Sync to devices</h4>
-          <Suspense fallback={<Skeleton className="h-40 w-60" />}>
-            <DeviceForm bookId={book.id} promise={devicesPromise} />
-          </Suspense>
+          <DeviceForm bookId={book.id} />
         </div>
       </DialogContent>
     </Dialog>

@@ -3,8 +3,9 @@
 import { Tablet, LoaderCircle } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { use, useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
 import { setUserDevice } from "@/app/actions/set-user-device";
+import useSWR from "swr";
 
 interface Device {
   id: string; // change to number if your schema uses number
@@ -16,15 +17,24 @@ interface Device {
 
 interface DeviceFormProps {
   bookId: string;
-  promise: Promise<{ devices: Device[] | null; error: string | null }>;
 }
 
-export default function DeviceForm({ promise, bookId }: DeviceFormProps) {
-  const { devices, error } = use(promise);
-  const [list, setList] = useState<Device[]>(() =>
-    (devices ?? []).map((d) => ({ ...d, checked: !!d.checked }))
-  );
+const fetcher = (url: string) => fetch(url).then((r) => r.json());
+
+export default function DeviceForm({ bookId }: DeviceFormProps) {
+  const { data, mutate, isLoading } = useSWR<{
+    devices: Device[] | null;
+    error: string | null;
+  }>(`/api/devices?bookId=${bookId}`, fetcher);
+  const [list, setList] = useState<Device[]>([]);
   const [isPending, startTransition] = useTransition();
+
+  // Sync local list when remote data changes (and we are not in the middle of a pending optimistic revert)
+  useEffect(() => {
+    if (data?.devices) {
+      setList(data.devices.map((d) => ({ ...d, checked: !!d.checked })));
+    }
+  }, [data?.devices]);
 
   function handleToggle(deviceId: string, checked: boolean) {
     setList((prev) =>
@@ -35,6 +45,7 @@ export default function DeviceForm({ promise, bookId }: DeviceFormProps) {
     startTransition(async () => {
       try {
         await setUserDevice({ bookId, deviceId, enable: checked });
+        mutate();
       } catch (e) {
         setList((prev) =>
           prev.map((d) => (d.id === deviceId ? { ...d, checked: !checked } : d))
@@ -43,8 +54,8 @@ export default function DeviceForm({ promise, bookId }: DeviceFormProps) {
       }
     });
   }
-  if (error) {
-    return <div className="text-xs text-muted-foreground">{error}</div>;
+  if (data?.error) {
+    return <div className="text-xs text-muted-foreground">{data.error}</div>;
   }
   return (
     <div className="space-y-2">
@@ -52,7 +63,7 @@ export default function DeviceForm({ promise, bookId }: DeviceFormProps) {
         <div key={d.id} className="flex items-center space-x-2">
           <Checkbox
             id={String(d.id)}
-            disabled={isPending}
+            disabled={isPending || isLoading}
             checked={!!d.checked}
             onCheckedChange={(val) => handleToggle(d.id, val === true)}
           />
@@ -69,7 +80,7 @@ export default function DeviceForm({ promise, bookId }: DeviceFormProps) {
       ))}
       <LoaderCircle
         className={`${
-          isPending ? "opacity-100" : "scale-75 opacity-0"
+          isPending || isLoading ? "opacity-100" : "scale-75 opacity-0"
         } text-[10px] text-muted-foreground transition-all animate-spin`}
       />
     </div>
