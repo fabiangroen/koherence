@@ -1,5 +1,3 @@
-import { SearchOptions } from "minisearch";
-
 export type Book = {
   author: string;
   title: string;
