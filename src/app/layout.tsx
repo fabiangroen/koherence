@@ -4,7 +4,6 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/themetoggle";
 import SignIn from "@/components/sign-button";
-import { auth } from "@/auth";
 import { Toaster } from "@/components/ui/sonner";
 import Link from "next/link";
 import { SessionProvider } from "next-auth/react";
@@ -49,7 +48,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
   return (
     <html lang="en" suppressHydrationWarning>
       <body
