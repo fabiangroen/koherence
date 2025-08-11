@@ -22,6 +22,7 @@ export default function CardGridClient({ initialBooks }: Props) {
   const [query, setQuery] = useState("");
   const [books, setBooks] = useState<Book[]>(initialBooks);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [openBookId, setOpenBookId] = useState<string | null>(null);
 
   useEffect(() => {
     setBooks(initialBooks);
@@ -41,7 +42,7 @@ export default function CardGridClient({ initialBooks }: Props) {
   return (
     <div className="w-full max-w-6xl">
       {/* Search UI */}
-      <Command className="rounded-lg border shadow-md">
+      <Command className="transition-all">
         <CommandInput
           placeholder="Search books by title or author..."
           value={query}
@@ -51,33 +52,47 @@ export default function CardGridClient({ initialBooks }: Props) {
           }}
         />
 
-        {showSuggestions && query.length > 0 && (
-          <CommandList>
-            {results.length > 0 ? (
-              <CommandGroup heading="Suggestions">
-                {results.slice(0, 5).map((book) => (
-                  <CommandItem
-                    key={book.id}
-                    onSelect={() => {
-                      setQuery(book.title);
-                      setShowSuggestions(false);
-                    }}
-                  >
-                    <BookIcon />
-                    {book.title}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            ) : (
-              <CommandEmpty>No results found.</CommandEmpty>
-            )}
-          </CommandList>
-        )}
+        <CommandList>
+          <CommandGroup
+            heading="Suggestions"
+            className={
+              showSuggestions && query.length > 0
+                ? "transition-all duration-300 opacity-100 max-h-50"
+                : "transition-all duration-300 opacity-0 max-h-0 overflow-hidden pointer-events-none"
+            }
+          >
+            {results.slice(0, 5).map((book) => (
+              <CommandItem
+                key={book.id}
+                onSelect={() => {
+                  setQuery(book.title);
+                  setShowSuggestions(false);
+                  setOpenBookId(book.id);
+                }}
+              >
+                <BookIcon />
+                {book.title}
+              </CommandItem>
+            ))}
+          </CommandGroup>
+        </CommandList>
       </Command>
 
       <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-8 gap-y-6">
         {results.map((book) => (
-          <BookCard key={book.id} book={book} />
+          <BookCard
+            key={book.id}
+            book={book}
+            open={openBookId === book.id}
+            onOpenChange={(isOpen) => {
+              if (!isOpen) {
+                // closing currently open dialog
+                if (openBookId === book.id) setOpenBookId(null);
+              } else {
+                setOpenBookId(book.id);
+              }
+            }}
+          />
         ))}
       </div>
     </div>

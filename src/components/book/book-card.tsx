@@ -10,7 +10,15 @@ import { Card, CardHeader } from "@/components/ui/card";
 import DeviceForm from "@/components/book/device-form";
 import type { Book } from "@/lib/types";
 import { BookImage } from "lucide-react";
-export function BookCard({ book }: { book: Book }) {
+export function BookCard({
+  book,
+  open,
+  onOpenChange,
+}: {
+  book: Book;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}) {
   const { title, author, releaseDate, coverImg, id } = book;
   const hasCover = !coverImg.endsWith("none");
 
@@ -62,7 +70,7 @@ export function BookCard({ book }: { book: Book }) {
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
         <Card className="w-full h-full flex flex-col p-0 transition-all hover:scale-101 cursor-pointer">
           <CardHeader className="flex-1 flex flex-col items-center p-0">
