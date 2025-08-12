@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import {
   Dialog,
   DialogContent,
@@ -26,7 +27,7 @@ export function BookCard({
     const isCard = size === "card";
     const containerClasses = isCard
       ? "w-full aspect-[2/3] overflow-hidden rounded-t-xl"
-      : "w-full h-full";
+      : "w-full aspect-[2/3]";
 
     const iconSize = isCard ? "w-24 h-24" : "w-12 h-12";
     const noCoverClasses = isCard
@@ -34,13 +35,8 @@ export function BookCard({
       : "bg-muted flex flex-col items-center justify-center";
 
     return hasCover ? (
-      <div className={containerClasses}>
-        <img
-          src={coverImg}
-          alt={title}
-          className="w-full h-full object-cover"
-          loading="lazy"
-        />
+      <div className={`${containerClasses} relative`}>
+        <Image src={coverImg} alt={title} fill />
       </div>
     ) : (
       <div className={`${containerClasses} ${noCoverClasses}`}>

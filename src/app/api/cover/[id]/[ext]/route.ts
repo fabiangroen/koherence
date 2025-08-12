@@ -5,7 +5,7 @@ import fs from "fs/promises";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string; ext: string } },
+  { params }: { params: { id: string; ext: string } }
 ) {
   const session = await auth();
 
@@ -19,12 +19,12 @@ export async function GET(
     "storage",
     "books",
     id,
-    `cover.${ext}`,
+    `cover.${ext}`
   );
 
   try {
     const image = await fs.readFile(imagePath);
-    return new NextResponse(image, {
+    return new NextResponse(new Uint8Array(image), {
       headers: { "Content-Type": `image/${ext}` },
     });
   } catch (err) {
