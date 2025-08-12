@@ -26,11 +26,7 @@ export default async function CardGrid() {
   }));
 
   return (
-    <main className="flex flex-1 flex-col items-center relative mb-14">
-      <p className="mt-8 text-muted-foreground mb-6">
-        Welcome, {session.user.name}!
-      </p>
-
+    <main className="flex flex-1 flex-col items-center relative mb-14 mt-4">
       <CardGridClient initialBooks={books} />
 
       <div className="absolute top-4 right-4">
