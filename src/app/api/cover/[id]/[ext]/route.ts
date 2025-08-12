@@ -5,7 +5,7 @@ import fs from "fs/promises";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string; ext: string } }
+  { params }: { params: { id: string; ext: string } },
 ) {
   const session = await auth();
 
@@ -19,7 +19,7 @@ export async function GET(
     "storage",
     "books",
     id,
-    `cover.${ext}`
+    `cover.${ext}`,
   );
 
   try {
