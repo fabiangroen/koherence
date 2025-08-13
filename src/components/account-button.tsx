@@ -13,7 +13,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { LogIn, LogOut, Settings } from "lucide-react";
 
-export default function SignIn() {
+export default function AccountButton() {
   const { data: session } = useSession();
   const [isRightClick, setIsRightClick] = useState(false);
   const [open, setOpen] = useState(false);

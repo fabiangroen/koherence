@@ -65,7 +65,7 @@ export default function FileUpload() {
       <DialogTrigger asChild>
         <div className="w-30 flex justify-end">
           <Button className="group flex justify-end w-10 hover:w-30 transition-all">
-            <div className="opacity-0 group-hover:opacity-100 transition-all ease-in-out">
+            <div className="opacity-0 group-hover:opacity-100 transition-all">
               Upload File
             </div>
             <Plus className="h-4 w-4 group-hover:-rotate-90 transition-all transition-500" />

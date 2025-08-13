@@ -36,7 +36,7 @@ export function BookCard({
 
     return hasCover ? (
       <div className={`${containerClasses} relative`}>
-        <Image src={coverImg} alt={title} fill objectFit="cover" />
+        <Image src={coverImg} alt={title} fill style={{ objectFit: "cover" }} />
       </div>
     ) : (
       <div className={`${containerClasses} ${noCoverClasses}`}>

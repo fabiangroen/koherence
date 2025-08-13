@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { GetUserDevices } from "@/app/actions/get-user-devices";
+import { GetUserDevices } from "@/app/actions/get-book-devices";
 
 export async function GET(req: NextRequest) {
   const bookId = req.nextUrl.searchParams.get("bookId") ?? "";

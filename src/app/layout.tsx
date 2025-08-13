@@ -3,10 +3,11 @@ import { Geist, Geist_Mono, Satisfy } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/themetoggle";
-import SignIn from "@/components/sign-button";
+import Account from "@/components/account-button";
 import { Toaster } from "@/components/ui/sonner";
 import Link from "next/link";
 import { SessionProvider } from "next-auth/react";
+import Devices from "@/components/devices/devices";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
   description: "Sync books with your Kobo wirelessly",
 };
 
-function Header() {
+async function Header() {
   return (
     <header className="w-full flex items-center justify-between px-4 py-2 bg-background border-b border-border">
       <Link href="/" className="text-2xl">
@@ -37,7 +38,8 @@ function Header() {
       </Link>
       <div className="flex items-center gap-4">
         <ThemeToggle />
-        <SignIn />
+        <Devices />
+        <Account />
       </div>
     </header>
   );

@@ -2,7 +2,6 @@ import { auth } from "@/auth";
 import { db } from "@/db";
 import { books as booksTable } from "@/db/schema";
 import type { Book } from "@/lib/types";
-import FileUpload from "@/components/file-upload";
 import CardGridClient from "./card-grid.client";
 import React from "react";
 
@@ -26,12 +25,12 @@ export default async function CardGrid() {
   }));
 
   return (
-    <main className="flex flex-1 flex-col items-center relative mb-14 mt-4">
-      <CardGridClient initialBooks={books} />
-
-      <div className="absolute top-4 right-4">
-        <FileUpload />
-      </div>
+    <main className="flex flex-1 flex-col items-center relative mb-14 mt-4 mx-[10vw]">
+      {books.length === 0 ? (
+        <p className="mt-8 text-muted-foreground">No books found.</p>
+      ) : (
+        <CardGridClient initialBooks={books} />
+      )}
     </main>
   );
 }

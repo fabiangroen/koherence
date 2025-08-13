@@ -6,7 +6,6 @@ import type { Book } from "@/lib/types";
 import { BookCard } from "@/components/book/book-card";
 import {
   Command,
-  CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
@@ -40,7 +39,7 @@ export default function CardGridClient({ initialBooks }: Props) {
   }, [books, fuse, query]);
 
   return (
-    <div className="w-full max-w-6xl">
+    <div className="w-full">
       {/* Search UI */}
       <Command className="transition-all">
         <CommandInput
@@ -78,7 +77,7 @@ export default function CardGridClient({ initialBooks }: Props) {
         </CommandList>
       </Command>
 
-      <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-8 gap-y-6">
+      <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-8 gap-y-6">
         {results.map((book) => (
           <BookCard
             key={book.id}

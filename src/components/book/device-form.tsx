@@ -4,7 +4,7 @@ import { Tablet, LoaderCircle } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { useState, useTransition, useEffect } from "react";
-import { setUserDevice } from "@/app/actions/set-user-device";
+import { setUserDevice } from "@/app/actions/set-book-device";
 import useSWR from "swr";
 
 interface Device {
@@ -25,7 +25,7 @@ export default function DeviceForm({ bookId }: DeviceFormProps) {
   const { data, mutate, isLoading } = useSWR<{
     devices: Device[] | null;
     error: string | null;
-  }>(`/api/devices?bookId=${bookId}`, fetcher);
+  }>(`/api/devices/book?bookId=${bookId}`, fetcher);
   const [list, setList] = useState<Device[]>([]);
   const [isPending, startTransition] = useTransition();
 
