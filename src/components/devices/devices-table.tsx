@@ -9,6 +9,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Forward } from "lucide-react";
+import { DeviceDeleteDialog } from "./device-components";
 import useSWR from "swr";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
@@ -31,7 +34,7 @@ export default function DevicesTable() {
 
   const { data, error, isLoading } = useSWR<ApiResponse>(
     `/api/devices/user`,
-    fetcher,
+    fetcher
   );
 
   // Group by device id to aggregate accessors for the "Access" column
@@ -129,7 +132,10 @@ export default function DevicesTable() {
                     : "Private"}
                 </TableCell>
                 <TableCell className="text-right text-muted-foreground text-xs">
-                  —
+                  <Button size="icon" variant="outline">
+                    <Forward />
+                  </Button>
+                  <DeviceDeleteDialog id={d.id} />
                 </TableCell>
               </TableRow>
             ))}
