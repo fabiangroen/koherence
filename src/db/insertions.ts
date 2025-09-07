@@ -1,5 +1,7 @@
 import { db } from "@/db";
+import { eq } from "drizzle-orm";
 import { books as booksTable } from "@/db/schema";
+import { users } from "@/db/schema";
 
 export async function insertBook(
   bookID: string,
@@ -27,6 +29,24 @@ export async function insertBook(
       })
       .run();
     return undefined;
+  } catch (e: any) {
+    return e;
+  }
+}
+
+export async function getUserById(id: string) {
+  return db.select().from(users).where(eq(users.id, id));
+}
+
+export async function insertUser(
+  id: string,
+  email: string,
+  name: string,
+  image: string,
+  role: string,
+): Promise<Error | undefined> {
+  try {
+    await db.insert(users).values({ id, email, name, image, role });
   } catch (e: any) {
     return e;
   }

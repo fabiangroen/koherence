@@ -12,12 +12,7 @@ import { TabletSmartphone } from "lucide-react";
 
 export default async function Devices() {
   const session = await auth();
-  if (!session?.user)
-    return (
-      <main className="flex flex-1 justify-center">
-        <p className="mt-8 text-muted-foreground">Log in to view devices</p>
-      </main>
-    );
+  if (!session?.user) return;
 
   return (
     <Dialog>

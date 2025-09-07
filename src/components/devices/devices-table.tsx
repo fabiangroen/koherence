@@ -34,7 +34,7 @@ export default function DevicesTable() {
 
   const { data, error, isLoading } = useSWR<ApiResponse>(
     `/api/devices/user`,
-    fetcher
+    fetcher,
   );
 
   // Group by device id to aggregate accessors for the "Access" column

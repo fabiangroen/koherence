@@ -22,8 +22,8 @@ export async function deleteDevice(deviceId: string) {
         .where(
           and(
             eq(deviceAccess.deviceId, deviceId),
-            eq(deviceAccess.userId, session.user.id ?? "")
-          )
+            eq(deviceAccess.userId, session.user.id ?? ""),
+          ),
         );
     } catch (error) {
       console.error("Error removing device access:", error);

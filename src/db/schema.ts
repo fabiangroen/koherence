@@ -1,4 +1,9 @@
-import { sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
+import {
+  sqliteTable,
+  text,
+  integer,
+  uniqueIndex,
+} from "drizzle-orm/sqlite-core";
 
 export const books = sqliteTable("books", {
   title: text("title").notNull(),
@@ -9,6 +14,14 @@ export const books = sqliteTable("books", {
   subjects: text("subjects").notNull(),
   id: text("id").primaryKey(),
   imageFileExtension: text("image_file_extension").notNull(),
+});
+
+export const users = sqliteTable("users", {
+  id: text("id").primaryKey(),
+  email: text("email").notNull().unique(),
+  name: text("name"),
+  image: text("image"),
+  role: text("role").notNull().default(""),
 });
 
 export const devices = sqliteTable("devices", {

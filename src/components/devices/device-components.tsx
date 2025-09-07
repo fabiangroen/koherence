@@ -53,7 +53,7 @@ export function DeviceDeleteDialog({ id }: { id: string }) {
                     loading: "Deleting device...",
                     success: "Device deleted",
                     error: "Failed to delete device",
-                  }
+                  },
                 )
               }
             >
