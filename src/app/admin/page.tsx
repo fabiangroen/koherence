@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { DeleteBooksCard } from "./components/delete-books-card";
 import { QueryForm } from "./components/query-form";
 import BooksTable from "./components/books-table";
+import UsersTable from "./components/users-table";
 
 export default async function AdminDashboard() {
   const session = await auth();
@@ -24,10 +25,18 @@ export default async function AdminDashboard() {
       </div>
 
       {/* Books Table Section */}
-      <div className="mt-12">
+      <div className="mt-8">
         <h2 className="text-2xl font-semibold mb-6">Books Management</h2>
         <div className="bg-card rounded-lg border shadow-sm p-6">
           <BooksTable />
+        </div>
+      </div>
+
+      {/* User Management Section */}
+      <div className="mt-8">
+        <h2 className="text-2xl font-semibold mb-6">User Management</h2>
+        <div className="bg-card rounded-lg border shadow-sm p-6">
+          <UsersTable />
         </div>
       </div>
     </div>

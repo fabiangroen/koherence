@@ -28,7 +28,9 @@ export const devices = sqliteTable("devices", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   type: text("type").notNull(),
-  ownerId: text("owner_id").notNull(),
+  ownerId: text("owner_id")
+    .notNull()
+    .references(() => users.id),
 });
 
 export const deviceAccess = sqliteTable(
@@ -37,7 +39,9 @@ export const deviceAccess = sqliteTable(
     deviceId: text("device_id")
       .notNull()
       .references(() => devices.id),
-    userId: text("user_id").notNull(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id),
   },
   (table) => [uniqueIndex("deviceid_userid").on(table.deviceId, table.userId)],
 );

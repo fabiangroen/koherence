@@ -10,8 +10,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Forward } from "lucide-react";
-import { DeviceDeleteDialog } from "./device-components";
+import {
+  DeviceDeleteDialog,
+  AddDeviceDialog,
+  ShareDeviceDialog,
+} from "./device-components";
 import useSWR from "swr";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
@@ -82,7 +85,13 @@ export default function DevicesTable() {
   })();
 
   return (
-    <div className="w-full overflow-x-auto">
+    <div className="w-full overflow-x-auto space-y-4">
+      <div className="flex items-center justify-between">
+        <div className="text-sm font-medium text-muted-foreground">
+          Your devices
+        </div>
+        <AddDeviceDialog />
+      </div>
       <Table>
         <TableHeader>
           <TableRow>
@@ -132,9 +141,7 @@ export default function DevicesTable() {
                     : "Private"}
                 </TableCell>
                 <TableCell className="text-right text-muted-foreground text-xs">
-                  <Button size="icon" variant="outline">
-                    <Forward />
-                  </Button>
+                  <ShareDeviceDialog id={d.id} />
                   <DeviceDeleteDialog id={d.id} />
                 </TableCell>
               </TableRow>
